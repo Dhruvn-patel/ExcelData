@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Document</title>
+    <style>
+        .table {
+            margin-top: 100px;
+        }
+
+        .container_add {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 100px
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container_add">
+            <a id=" " class="btn btn-outline-primary" onclick="savadataall()">Save All</a>
+            <input type="button" value="Add Row" class="btn btn-outline-primary" id="row_add" onclick="new_add(this)">
+        </div>
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Contact No</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">#</th>
+                </tr>
+            </thead>
+            <tbody id="add_col">
+                <% for(let i=0;i< showdata.length;i++) { %>
+                    <tr>
+                        <th scope="row" id="newcol">
+                            <%= showdata[i].id %>
+                        </th>
+                        <td><input type="text" name="f_name" value="<%=showdata[i].fname %>"></td>
+                        <td><input type="text" name="lname" value="<%=showdata[i].lname %>"></td>
+                        <td><input type="text" name="number_name" value="<%=showdata[i].contact %>"></td>
+                        <td><input type="text" name="email_name" value="<%=showdata[i].email %>"></td>
+                        <td><input type="button" value="Update" class="btn btn-primary insertdata" id="<%=showdata[i].id %>"
+                                onclick="update_val(this)"></td>
+                    </tr>
+
+                    <% } %>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function new_add(id) {
+            var add_par = document.getElementById('add_col');
+            var tr_new = ``;
+            tr_new = `<tr>
+                <th scope="row" id="newcol"></th>
+                <td><input type="text" name="fname" ></td>
+                <td><input type="text" name="lname" ></td>
+                <td><input type="text" name="number_name" ></td>
+                <td><input type="text" name="email_name" ></td> 
+                <td><input type="button" value="Save" class="btn btn-primary insertdata" id="savedata"  onclick='mysave()' ></td>
+                  </tr> `
+
+            add_par.innerHTML += tr_new;
+        }
+
+        async function update_val(ele) {
+            id = ele.id;
+            var saveme = document.getElementById(id)
+            var g_id=saveme.getAttribute('id');
+            var new_load = [];
+
+            const row = saveme.parentNode.parentNode;
+            // console.log(row);
+
+            const allInputs = row.querySelectorAll("input[type=text]");
+            allInputs.forEach(input => {
+
+                new_load.push(input.value);
+            })
+            // console.log(new_load);
+
+            const update_val = await fetch(`http://localhost:6050/updatedata/${id}`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    data: new_load,
+                    id:g_id
+                })
+            })
+            // update_val();
+        }
+
+
+        async function mysave() {
+            
+            var saveme = document.getElementById("savedata");
+            var g_id=saveme.getAttribute('id');
+            console.log(g_id);
+            var new_load = [];
+
+            const row = saveme.parentNode.parentNode;
+            const allInputs = row.querySelectorAll("input[type=text]");
+            allInputs.forEach(input => {
+                
+                new_load.push(input.value);
+            })
+
+            console.log(new_load);
+
+            const add_data = await fetch(`http://localhost:6050/adddata`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    data: new_load,
+                    id:g_id
+                })
+            })
+
+
+
+
+
+        }
+     
+        async function savadataall() {
+            // var save_all = document.getElementById('save_all');
+            var save_arr = document.querySelectorAll('.insertdata');
+                save_arr.forEach(async ele => {
+                    var g_id=ele.getAttribute('id');
+                      console.log(g_id);
+                    const rows = ele.parentNode.parentNode;
+                    var arr = new Array();
+                    const allInputs = rows.querySelectorAll("input[type=text]");
+
+                    allInputs.forEach(input => {
+                        console.log(input.value);
+                        arr.push(input.value);
+                    })
+                    const add_data = await fetch(`http://localhost:6050/adddata`, {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            data: arr,
+                            id:g_id
+                        })
+                    })
+
+                })
+    
+            }
+
+
+
+
+    </script>
+</body>
+
+</html>
