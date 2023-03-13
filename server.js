@@ -31,7 +31,7 @@ app.get('/', async (req, res) => {
 app.post('/adddata', async(req, res) => {
 
     const data_arr = req.body;
-    // console.log(data_arr);0
+    
     const id=data_arr.id;
      console.log(id);
     var fname = data_arr.data[0];
