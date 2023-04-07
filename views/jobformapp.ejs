@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" type="text/css">
+
+    <title>Form</title>
+    <style>
+        .btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        input[type="submit"] {
+            height: 30px;
+            font-size: 25px;
+            background-color: azure;
+            padding-bottom: 4px;
+        }
+
+        input[type="submit"]:hover {
+            cursor: pointer;
+            background-color: aliceblue
+        }
+
+        .title {
+            display: flex;
+            justify-content: center;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="/jobformdetail/jobform" method="post">
+        <div class="title">Job Application</div>
+        <div class="container">
+            <!-- Basic Detail -->
+            <fieldset class="field_type">
+                <legend>Basic Detail:</legend>
+                <div class="div1">
+                    <table>
+                        <tr>
+                            <td> <label for="fname">First name:</label>
+                                <input type="text" id="fname" name="fname"><br><br>
+                            </td>
+                            <td> <label for="lname">Last name:</label>
+                                <input type="text" id="lname" name="lname"><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="Designation_id">Designation:</label>
+                                <input type="text" id="Designation_id" name="Designation"><br><br>
+                            </td>
+                            <td><label for="add1_id">Address 1:</label><br>
+                                <textarea id="add1_id" name="Address1" rows="2" cols="50">
+                                    </textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> <label for="email">Email:</label>
+                                <input type="email" id="email" name="email_name"><br><br>
+                            </td>
+                            <td><label for="add3_id">Address 2:</label><br>
+                                <textarea id="add2_id" name="Address2" rows="2" cols="50">
+                                    </textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="phone_id">Phone Number</label>
+                                <input type="text" name="phone_name" id="phone_id">
+                            </td>
+                            <td>
+                                <label for="state_id">State:</label>
+                                <select name="state_name" id="state_id" onchange="get_city(this)">
+                                    <option value="">select state</option>
+                                    <% for(let i=0;i< data_option.length;i++) { %>
+                                        <option value="<%=data_option[i].state%>">
+                                            <%=data_option[i].state %>
+                                        </option>
+                                        <% } %>
+                                </select>
+                            </td>
+                            <td>
+                                <label for="city_id">City</label>
+                                <select name="city_name" id="city_id">
+                                    <option value="select city" selected> select city</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Gender : </label>&nbsp; &nbsp;
+                                <label for="gender_male"> Male </label> <input type="radio" name="gender" value="male"
+                                    id="gende_male">
+                                <label for="gender_female">Female </label><input type="radio" name="gender"
+                                    value="female" id="gender_female">
+                                <label for="gender_other">other </label><input type="radio" name="gender" value="other"
+                                    id="gender_other">
+                            </td>
+                            <td>
+                                <label for="zipcode">Zipcode</label>
+                                <input type="number" id="zipcode" name="zipcode_name">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="RelationShip_id">RelationShip Status:</label>
+                                <select name="RelationShip" id="RelationShip_id">
+                                    <% for( let i=0;i< relation_option.length;i++) { %>
+                                        <option value="<%=relation_option[i].value%>">
+                                            <%=relation_option[i].value%>
+                                        </option>
+                                        <% } %>
+                                </select>
+                            </td>
+                            <td>
+                                <label for="date_id">DOB:</label>
+                                <input type="date" id="date_id" name="date_name">
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+            </fieldset>
+            <br><br>
+
+            <!-- Education Detail -->
+            <fieldset class="field_type">
+                <legend>Education Detail</legend>
+                <div class="div2">
+                    <table id="tb1">
+                        <tr id="clone_id1">
+                            <td><label for="board_idd1"></label>
+                                <select name="course">
+                                    <% for( let i=0;i< course_option.length;i++) { %>
+                                        <option value="<%=course_option[i].value%>">
+                                            <%=course_option[i].value%>
+                                        </option>
+                                        <% } %>
+                                </select>
+                            </td>
+                            <td><label for="board_id0">Name Of board :</label>
+                                <input type="text" id="board_id0" name="board">
+                            </td>
+                            <td><label for="passingyear_id0">Passiong Year:</label>
+                                <input type="number" id="passingyear_id0" name="passingyear">
+                            </td>
+                            <td><label for="Percentage_id0">Percentage:</label>
+                                <input type="text" id="Percentage_id0" name="percentage">
+                            </td>
+                            <td>
+                                <label for="add_btn_id"> </label>
+                                <input type="button" name="add_button" value="&#10133;" onclick="add_btn()">
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+            <!-- Work Experience -->
+            <fieldset class="field_type">
+                <legend>Work Experience</legend>
+                <div class="div3">
+                    <table id="tb3">
+                        <tr id="clone_id2">
+                            <td><label for="Companyname_id">Company name :</label>
+                                <input type="text" id="Companyname_id" name="company_name">
+                            </td>
+                            <td><label for="Designation_id">Designation:</label>
+                                <input type="text" id="Designation_id" name="designation_name">
+                            </td>
+                            <td><label for="from_id">From:</label>
+                                <input type="date" id="from_id" name="from_date">
+                            </td>
+                            <td><label for="to_id">to:</label>
+                                <input type="date" id="to_id" name="to_date">
+                            </td>
+                            <td>
+                                <label for="add_Work_btn_id"> </label>
+                                <input type="button" name="add_Work_btn" id="add_Work_btn" value="&#10133;"
+                                    onclick="addbtn()">
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+            <br><br>
+            <!-- Language Known -->
+            <div class="flex_combine">
+                <fieldset class="field_type field50">
+                    <legend>Language Known</legend>
+                    <div class="div4">
+                        <table>
+                            <% for(let i=0;i< lang.length;i++) { %>
+                                <tr>
+                                    <td><label for="<%=lang[i].value%>">
+                                            <%=lang[i].value%>
+                                        </label>
+                                        <input type="checkbox" id="<%=lang[i].value%> " name="<%=lang[i].value%>"
+                                            value="<%=lang[i].value%>">
+                                    </td>
+                                    <td><label for="read_id">read</label>
+                                        <input type="checkbox" id="read1_id" value="10" name="<%=lang[i].value%>r">
+                                    </td>
+                                    <td><label for="write_id">write</label>
+                                        <input type="checkbox" id="write1_id" value="10" name="<%=lang[i].value%>w">
+                                    </td>
+                                    <td><label for="speak_id">speak</label>
+                                        <input type="checkbox" id="speak1_id" value="10" name="<%=lang[i].value%>s">
+                                    </td>
+                                </tr>
+                                <%}%>
+                        </table>
+                    </div>
+                </fieldset>
+                <br><br>
+                <!-- Technologies -->
+                <fieldset class="field_type field50">
+                    <legend>Technologies</legend>
+                    <div class="div5">
+                        <table>
+                            <% for(let i=0;i< tech.length;i++){%>
+                                <tr>
+                                    <td><input type="checkbox" name="<%=tech[i].value%>"
+                                            value="<%=tech[i].value%>"><label for="<%=tech[i].value%>">
+                                            <%=tech[i].value%>
+                                        </label> </td>
+                                    <td><input type="radio" id="b4" name="<%=tech[i].value%>r" value="Beginer"><label
+                                            for="b1">Beginer</label></td>
+                                    <td><input type="radio" id="b5" name="<%=tech[i].value%>r" value="Mideator"><label
+                                            for="b2">Mideator</label></td>
+                                    <td><input type="radio" id="b6" name="<%=tech[i].value%>r" value="Expert"><label
+                                            for="b3">Expert</label></td>
+                                </tr>
+                                <%}%>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+            <br><br>
+            <!-- Referance Contact -->
+            <fieldset class="field_type">
+                <legend>Referance Contact:</legend>
+                <div class="div6">
+                    <table id="tb6">
+                        <tr id="clone_id3">
+                            <td><label for="Referance_id">Name Of Referance :</label>
+                                <input type="text" id="Referance_id" name="referance">
+                            </td>
+                            <td><label for="Contact_id">Contact Number:</label>
+                                <input type="number" id="Contact_id" name="contact">
+                            </td>
+                            <td><label for="Relation_id">Relation:</label>
+                                <input type="text" id="Relation_id" name="relation">
+                            </td>
+                            <td>
+                                <label for="add_btn_id"> </label>
+                                <input type="button" name="add_button" onclick="add_ref()" value="&#10133;">
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+            <br><br>
+            <!-- Preferances -->
+            <fieldset class="field_type">
+                <legend>Preferances:</legend>
+                <div class="div7">
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="location_id">Preferd location:</label>
+
+                                <select id="location_id" name="location_name" multiple>
+                                    <% for(let i=0;i< loc.length;i++){ %>
+
+                                        <option value="<%=loc[i].value%>">
+                                            <%=loc[i].value%>
+                                        </option>
+                                        <%}%>
+
+                                </select>
+                            </td>
+                            <td>
+                                <label for="notice_period_id">Notice period</label>
+                                <input type="text" id="notice_period_id" name="notice_period">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="expected_id">Expected CTC</label>
+                                <input type="text" id="expected_id" name="expected"> <br><br>
+                                <label for="Current_id"> Current CTC</label>
+                                <input type="text" id="Current_id" name="current">
+                            </td>
+                            <td>
+                                <label for="Department_id">Department :</label>
+                                <select name="department_name" id="Department_id">
+
+                                    <% for(let i=0;i< dep.length;i++) { %>
+                                        <option value="<%=dep[i].value%>">
+                                            <%=dep[i].value%>
+                                        </option>
+                                        <%}%>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+
+            <div class="btn"><input type="submit" value="submit"></div>
+        </div>
+    </form>
+    <script>
+        var idx = 1;
+        // document.getElementById('clone_id1').insertAdjacentHTML('afterend',add_btn())
+        // add_btn();
+        function addbtn() {
+            const node = document.getElementById('tb3');
+            let tr = document.createElement('tr');
+            tr.innerHTML = `<td><label for="Companyname_id">Company name :</label>
+                                 <input type="text" id="Companyname_id" name="company_name">
+                             </td>
+                             <td><label for="Designation_id">Designation:</label>
+                                 <input type="text" id="Designation_id" name="designation_name">
+                             </td>
+                             <td><label for="from_id">From:</label>
+                                 <input type="date" id="from_id" name="from_date">
+                             </td>
+                             <td><label for="to_id">to:</label>
+                                 <input type="date" id="to_id" name="to_date">
+                             </td>`
+
+            // Append the text node to the "li" node:
+            node.appendChild(tr);
+
+            // Append the "li" node to the list:
+            document.getElementById("tb3").appendChild(node);
+        }
+        function add_btn() {
+            const node = document.getElementById('tb1');
+            let tr = document.createElement('tr');
+            tr.innerHTML = ` <td><label for="board_idd1"></label>
+                                <select name="course">
+                                    <% for( let i=0;i< course_option.length;i++) { %>
+                                        <option value="<%=course_option[i].value%>">
+                                            <%=course_option[i].value%>
+                                        </option>
+                                        <% } %>
+                                </select>
+                            </td>
+                            <td><label for="board_id0">Name Of board :</label>
+                                <input type="text" id="board_id0" name="board">
+                            </td>
+                            <td><label for="passingyear_id0">Passiong Year:</label>
+                                <input type="number" id="passingyear_id0" name="passingyear">
+                            </td>
+                            <td><label for="Percentage_id0">Percentage:</label>
+                                <input type="text" id="Percentage_id0" name="percentage">
+                            </td>
+                           `
+
+            // Append the text node to the "li" node:
+            node.appendChild(tr);
+
+            // Append the "li" node to the list:
+            document.getElementById("tb1").appendChild(node);
+        }
+
+
+        function add_ref() {
+            const node = document.getElementById('tb6');
+            let tr = document.createElement('tr');
+            tr.innerHTML = `   <td><label for="Referance_id">Name Of Referance :</label>
+                                <input type="text" id="Referance_id" name="referance">
+                            </td>
+                            <td><label for="Contact_id">Contact Number:</label>
+                                <input type="number" id="Contact_id" name="contact">
+                            </td>
+                            <td><label for="Relation_id">Relation:</label>
+                                <input type="text" id="Relation_id" name="relation">
+                            </td>
+                          
+                           `
+
+            // Append the text node to the "li" node:
+            node.appendChild(tr);
+
+            // Append the "li" node to the list:
+            document.getElementById("tb6").appendChild(node);
+        }
+
+        async function get_city(ele) {
+            // state id
+            console.log(ele.value);
+            var state_name = ele.value;
+
+            const select_state = await fetch('/jobformdetail/all/state?state_name=' + state_name);
+            var cities_arr = select_state.json();
+            console.log(cities_arr);
+
+            var city = document.getElementById('city_id')
+
+            city.innerHTML = "";
+
+            cities_arr.result.forEach(element => {
+                city.innerHTML += `<option>${element.city_name}</option>`
+            });
+
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page List</title>
+</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+  integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+  integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+<style>
+  td {
+    width: 20%;
+    text-align: center;
+    font-size: 20px;
+  }
+
+  thead {
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  .link {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    margin: 20px;
+  }
+
+  a {
+    text-decoration: none;
+    padding: 8px;
+    background-color: rgb(170, 200, 231);
+    color: black;
+  }
+
+  a:hover {
+    background-color: rgb(210, 224, 237);
+    text-decoration: none;
+  }
+
+  #loader {
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: auto;
+    /* enable pointer events on loader */
+  }
+
+  #loader:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: -1;
+    pointer-events: none;
+    /* disable pointer events on background */
+  }
+
+  .spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #FFF;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<body>
+
+  <h1>Pagination Details</h1>
+  <table class="table1" border="1" cellspacing="0">
+    <thead>
+      <tr>
+        <td scope="col" width="100px">id</td>
+        <td scope="col" width="100px">FirstName</td>
+        <td scope="col" width="100px">LastName</td>
+        <td width="200px">clgName</td>
+        <td width="200px">Email</td>
+        <td scope="col">city</td>
+        <td scope="col">Contact</td>
+      </tr>
+    </thead>
+    <tbody id="tbody_name">
+      <% if(data.length){ for(var i=0; i < data.length; i++) {%>
+        <tr>
+          <th scope="row">
+            <%= data[i].student_id %>
+          </th>
+          <td>
+            <%= data[i].student_firstName%>
+          </td>
+          <td>
+            <%= data[i].student_LastName%>
+          </td>
+          <td>
+            <%= data[i].student_clgName%>
+          </td>
+          <td>
+            <%= data[i].student_emailId%>
+          </td>
+          <td>
+            <%= data[i].student_city%>
+          </td>
+          </td>
+          <td>
+            <%= data[i].student_contact%>
+          </td>
+          </td>
+        </tr>
+        <% } }%>
+
+    </tbody>
+  </table>
+
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+
+  <div class="link">
+
+    <a class="btn" onclick="myfunc(1)">1</a>
+    <a class="btn" onclick="myfunc(2)">2</a>
+    <a class="btn" onclick="myfunc(3)">3</a>
+    <a class="btn" onclick="myfunc(4)">4</a>
+    <a class="btn" onclick="myfunc(5)">5</a>
+    <a class="btn" onclick="myfunc(6)">6</a>
+    <a class="btn" onclick="myfunc(7)">7</a>
+    <a class="btn" onclick="myfunc(8)">8</a>
+
+  </div>
+</body>
+<script>
+  async function myfunc(id) {
+    document.getElementById("loader").style.visibility = "visible";
+    var tbodyname = document.getElementById('tbody_name');
+    // console.log(table);
+    console.log(id);
+    const arr = await fetch(`/pagination/page/data/${id}`);
+    const data_val = await arr.json();
+    console.log(data_val);
+    const data = data_val["result"];
+    console.log(data.length);
+    tbodyname.innerHTML = "";
+
+    data.forEach(element => {
+      // console.log(element.student_id);
+      tbodyname.innerHTML +=
+        `<tr>
+         <th> ${element.student_id} </th>
+        <td> 
+          ${element.student_firstName}
+        </td>
+        <td>
+          ${element.student_LastName}
+        </td>
+        <td>
+          ${element.student_clgName}
+        </td>
+        <td>
+          ${element.student_emailId}
+        </td>
+        <td>
+          ${element.student_city}
+        </td>
+        <td>
+          ${element.student_contact}
+        </td>
+       </tr>`
+
+    });
+    setTimeout(() => {
+      document.getElementById("loader").style.visibility = "hidden";
+    }, 0.9);
+
+  }
+</script>
+
+</html>

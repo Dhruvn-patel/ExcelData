@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <div class="main-content">
+        <section class="section-1">
+            <div class="container">
+                <div class="form_container_row">
+
+                    <div class="col col-2">
+                        <h2>Login Form</h2>
+                        <form action="/login" method="POST" class="form-container padd-1 padd-5">
+                            <div class="details_of_form ">
+                                <div class="padd-1">
+                                    <img src="/assets/img/logo.svg" alt="">
+                                </div>
+                                <div class="t-white fs-25 fw-700 py-2">Welcome Back!</div>
+                                <div class=" form-group mar-1">
+                                    <label for="email" class="m-point5 iblock t-white">Email</label>
+                                    <input type="text" class="w100 p-1" id="email" name="email"
+                                        oninput="checklemail(this)" required>
+                                    <span class="t-red fs-16 m-point5 iblock" id="email_id">
+
+                                    </span>
+                                </div>
+                                <div class=" form-group mar-1">
+                                    <label for="password" class="m-point5 iblock t-white">Password</label>
+                                    <input type="password" class="w100 p-1" id="password" name="password"
+                                        oninput="checkpass(this)">
+                                    <span class="t-red fs-16 m-point5 iblock" id="pass_id">
+
+                                    </span>
+                                </div>
+                                <% if(err==true) {%>
+                                    <span class="t-red fs-16 m-point5 iblock">
+                                        login Already !
+                                    </span>
+                                    <% } %>
+                                        <input type="submit" value="Login" id="submit"
+                                            class="w100 p-1 mar-1 bg-green t-white bnone c-pointer" disabled>
+                                        <div class=" mb-2">
+                                            <p class="t-white mr">Forgot password &nbsp; <a href="#"
+                                                    class="t-gold">click
+                                                    Here.</a>
+                                            </p>
+                                        </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col dis-flex flex-col just-fend">
+                        <div class="dis-flex just-fend">
+                            <img src="/assets/img/bottom-logo.png" alt="">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        let ischeckemail2 = false, ischeckPassword1 = false;
+        var submit = document.querySelector("#submit");
+        let flag = false;
+
+        async function checkpass(ele) {
+
+            const pass_id = document.getElementById('pass_id');
+            const email = document.getElementById('email').value;
+            let password = ele.value;
+            console.log(password);
+            const ans = await fetch('http://localhost:7050/checkpass', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email, password
+                })
+            });
+            const data = await ans.json();
+            //  console.log(data);
+            if (data.status === 404) {
+                pass_id.innerHTML = data.message;
+                ischeckPassword1 = false;
+
+            }
+            else {
+                console.log("data.status === 404");
+                pass_id.innerHTML = "";
+                ischeckPassword1 = true;
+            }
+
+            checksubmit(ele);
+        }
+
+        async function checklemail(ele) {
+            const email_id = document.getElementById('email_id');
+            let email = ele.value;
+            // console.log(email);
+            const ans = await fetch('http://localhost:7050/checklogiemail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email
+                })
+            });
+            const data = await ans.json();
+
+            if (data.status === 404) {
+                email_id.innerHTML = data.message;
+                ischeckemail2 = false;
+
+            }
+            else {
+                email_id.innerHTML = "";
+                ischeckemail2 = true;
+            }
+
+            checksubmit(ele);
+        }
+
+
+
+        function checksubmit(ele) {
+            // ele.addEventListener('input', (e) => {
+
+            flag = ischeckemail2 && ischeckPassword1;
+            console.log("EMAIL2:-", ischeckemail2);
+            if (flag) {
+                document.querySelector('#submit').disabled = false;
+                submit.style.cursor = 'pointer';
+            }
+            else {
+                submit.disabled = true;
+                submit.style.cursor = 'not-allowed';
+            }
+            // })
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: sans-serif;
+    background-color: rgb(206, 214, 214);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 6%;
+
+}
+h1{
+    font-size: 30px;
+    text-align: center;
+    display: block;
+    margin-top: 20px;
+}
+ td{
+    height: 150px;
+    width: 150px;
+    border: 1px solid black;
+    font-size: 100px;
+    background-color: black;
+    border-color: aliceblue;
+    border-radius: 12px;
+    color: white;
+ }
+.resetbtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    flex-direction: column;
+    
+}
+input[type=button]{
+    height: 30px;
+    width: 300px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.display{
+    margin-bottom: 50px;
+}
+.wonPlayer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#showWin{
+    font-size: 20px;
+
+}
+.counter
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    font-size:20px;
+    margin:20px;
+}
+span{
+    display: inline-block  ;
+}

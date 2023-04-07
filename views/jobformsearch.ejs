@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searching List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+        crossorigin="anonymous"></script>
+    <style>
+        .container_box {
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .symbol {
+            margin-top: 50px;
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+    <form name="myform" action="/jobformdetail/search">
+        <div class="container container_box">
+            <div class="search_box">
+                <input class="text_search" type="text" name="searchVal" id="search_val" placeholder="Search.. "
+                    value="<%=serachV%>">
+                <select name="options">
+                    <option name="AND_val" value="AND">AND</option>
+                    <option name="OR_val" value="OR">OR</option>
+                </select>
+                <input type="submit" value="Go">
+            </div>
+
+            <div class="symbol">
+                <p> ^ => FirstName</p>
+                <p> $ => LastName</p>
+                <p> ~ => Contact</p>
+                <p> _ => city</p>
+                <p> % => email</p>
+            </div>
+
+            <table class="table table-striped" border="1" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td scope="col">#</td>
+                        <td scope="col">id</td>
+                        <td scope="col">FirstName</td>
+                        <td scope="col">LastName</td>
+                        <td width="100px" scope="col">designation</td>
+                        <td width="100px" scope="col">address1</td>
+                        <td width="100px" scope="col">address2</td>
+                        <td width="50px" scope="col">email</td>
+                        <td scope="col">Contact</td>
+                        <td scope="col">gender</td>
+                        <td scope="col">city</td>
+                        <td scope="col">#</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if(basic_table.length){ for(var i=0; i < basic_table.length; i++) {%>
+                        <tr>
+                            <td scope="row" class="<%= basic_table[i].id %>" value="<%= basic_table[i].id %>">
+                                <input type="checkbox" class="flexCheckDefault" value="<%= basic_table[i].id %>">
+                            </td>
+                            <td scope="row">
+                                <%= basic_table[i].id %>
+                            </td>
+                            <td>
+                                <%= basic_table[i].first_name%>
+                            </td>
+                            <td>
+                                <%= basic_table[i].last_name%>
+                            </td>
+                            <td>
+                                <%= basic_table[i].designation%>
+                            </td>
+                            <td>
+                                <%= basic_table[i].address1%>
+                            </td>
+                            <td>
+                                <%= basic_table[i].address2%>
+                            </td>
+                            <td>
+                                <%= basic_table[i].email%>
+                            </td>
+                            <td>
+                                <%= basic_table[i].phone_num%>
+                            </td>
+                            <td>
+                                <%= basic_table[i].gender%>
+                            </td>
+                            <td>
+                                <%= basic_table[i].city%>
+                            </td>
+                            <td>
+                                <span class="btn btn-danger"><a
+                                        onclick="mydelete(`<%= basic_table[i].id %>`)">delete</a></span>
+                            </td>
+                            <td>
+                                <span class="btn btn-success"><a
+                                        href="/jobformdetail/editData/<%= basic_table[i].id %>">Edit</a></span>
+                            </td>
+                        </tr>
+                        <% } }%>
+
+                </tbody>
+            </table>
+
+            <div class="container">
+                <a onclick="mydeleteAll(this)" value="Delete All" class="btn btn-danger">Delete All</a>
+            </div>
+
+        </div>
+    </form>
+
+
+    <script>
+        var arr_id = [];
+
+        // async function myEdit(ele)
+        // {
+        //     console.log(ele);
+        //     return await fetch(`http://localhost:8050/editData/${ele}`);
+        // }
+        async function mydeleteAll(ele) {
+
+            var arr_val = [];
+            var checkbox_val = document.querySelectorAll('.flexCheckDefault');
+            for (let i = 0; i < checkbox_val.length; i++) {
+                if (checkbox_val[i].checked) {
+                    arr_val.push(checkbox_val[i].value);
+                    // console.log(checkbox_val[i].value);
+                }
+            }
+            if (confirm("Do you want to delete  All?")) {
+                for (let i = 0; i < arr_val.length; i++) {
+                    const select_val = await fetch(`/jobformdetail/deleterecord/${arr_val[i]}`);
+                    var arr = await select_val.json();
+                    // console.log(arr);
+                }
+            }
+            else {
+                console.log("no deleted");
+            }
+
+        }
+        async function mydelete(ele) {
+
+
+            console.log(ele); // id of row
+            if (confirm("Do you want to delete ?")) {
+                const select_val = await fetch(`/jobformdetail/deleterecord/${ele}`);
+                var arr = await select_val.json();
+                console.log(arr);
+            }
+            else {
+                console.log("no deleted");
+            }
+        }
+        function myFun() {
+
+            let val = document.myform.searchVal.value;
+            // console.log(val);
+            return false;
+
+        }
+    </script>
+
+</body>
+
+</html>

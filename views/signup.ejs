@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="main-content">
+        <section class="section-1">
+            <div class="container">
+                <div class="form_container_row">
+
+                    <div class="col col-2">
+                        <form action="/signup" method="POST" class="form-container padd-1 padd-5">
+                            <div class="details_of_form ">
+                                <div class="padd-1">
+                                    <img src="/assets/img/logo.svg" alt="">
+                                </div>
+                                <div class="t-white fs-25 fw-700 py-2">Welcome Back!</div>
+                                <div class=" form-group mar-1">
+                                    <label for="name" class="m-point5 iblock t-white">Name</label>
+                                    <input type="text" class="w100 p-1" id="name" name="name"
+                                        oninput="checkename(this)">
+                                    <span class="t-red fs-16 m-point5 iblock " id="name_id">
+
+                                    </span>
+
+                                </div>
+                                <div class=" form-group mar-1">
+                                    <label for="email" class="m-point5 iblock t-white">Email</label>
+                                    <input type="text" class="w100 p-1 " id="email" name="email"
+                                        oninput="checkemail(this),checkEmail(this)">
+                                    <span class="t-red fs-16 m-point5 iblock " id="email_id">
+
+                                    </span>
+                                    <span class="t-red fs-16 m-point5 iblock " id="email2_id">
+
+                                    </span>
+                                </div>
+                                <div class=" form-group mar-1">
+                                    <label for="password" class="m-point5 iblock t-white">Password</label>
+                                    <input type="password" class="w100 p-1" id="password" name="password"
+                                        oninput="CheckPassword(this)">
+                                    <span class="t-red fs-16 m-point5 iblock " id="pass2_id">
+
+                                    </span>
+                                </div>
+                                <div class=" form-group mar-1">
+                                    <label for="cnfrm" class="m-point5 iblock t-white">Confirm Password</label>
+                                    <input type="password" class="w100 p-1" id="cnfrm" name="cnfrm"
+                                        oninput="checkPasswords()">
+                                    <span class="t-red fs-18" id="cnfrm_id"></span>
+                                </div>
+                                <input type="submit" value="Sign Up" id="submit"
+                                    class="w100 p-1 mar-1 bg-green t-white bnone c-pointer not-allowed" disabled>
+                                <div class=" mt-7 mb-2">
+                                    <p class="t-white">Already have an account ? <a href="/login" class="t-gold">Login
+                                            Here.</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col dis-flex flex-col just-fend">
+                        <div class="dis-flex just-fend">
+                            <img src="/assets/img/bottom-logo.png" alt="">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+<script>
+    var submit = document.querySelector("#submit");
+    var ischeckemail = false;
+    var ischeckemail2 = false, ischeckName = false, ischeckPassword1 = false, ischeckPassword2 = false, isFormValid = false;
+    function checkEmail(ele) {
+        const inputtxt = ele.value;
+        console.log(inputtxt);
+        let flag = false;
+        const email_id = document.getElementById('email2_id');
+        const regExEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (regExEmail.test(inputtxt.trim())) {
+            email_id.innerHTML = '';
+            flag = true;
+            ischeckemail = true;
+        } else {
+            email_id.innerHTML = 'Not a Valid Email';
+            flag = false;
+            ischeckemail = false;
+        }
+
+        checksubmit(ele);
+        return flag;
+    }
+    function checkPasswords() {
+        const input1 = document.getElementById('password');
+        const input2 = document.getElementById('cnfrm');
+        const err = document.getElementById('cnfrm_id');
+        let flag = false;
+        if (input1.value !== input2.value) {
+            err.innerHTML = "Passwords do not match"
+            ischeckPassword2 = false;
+            flag = false;
+        } else {
+            err.innerHTML = "";
+            ischeckPassword2 = true;
+            flag = true;
+        }
+
+        checksubmit(this);
+        return flag;
+    }
+    function pwdChecker(inputtxt) {
+        const re = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,}$/;
+        return re.test(inputtxt);
+    }
+
+
+    function CheckPassword(ele) {
+        const inputtxt = ele.value;
+        var pass2_id = document.getElementById('pass2_id');
+        // console.log(inputtxt);
+        let str = pwdChecker(inputtxt);
+        console.log(str);
+        let flag = false;
+
+        if (str) {
+            pass2_id.innerHTML = "";
+            flag = true;
+            ischeckPassword1 = true;
+
+        }
+        else {
+            pass2_id.innerHTML = "Minimum eight characters, at least one uppercase letter, one lowercase letter and one number"
+            flag = false;
+            ischeckPassword1 = false;
+
+        }
+        checksubmit(ele);
+        return flag;
+    }
+
+
+
+    async function checkemail(ele) {
+
+        const email_id = document.getElementById('email_id');
+        let flag = false;
+        let email = ele.value;
+        console.log(email);
+        const ans = await fetch('http://localhost:7050/checkemail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email
+            })
+        });
+        const data = await ans.json();
+        //  console.log(data);
+        if (data.status === 404) {
+            email_id.innerHTML = data.message;
+            ischeckemail2 = false;
+            flag = false;
+        }
+        else {
+            console.log("data.status === 404");
+            email_id.innerHTML = "";
+            ischeckemail2 = true;
+            flag = true;
+        }
+
+        checksubmit(ele);
+        return flag;
+    }
+
+    async function checkename(ele) {
+        const name_id = document.getElementById('name_id');
+        // console.log(name_id);
+        // console.log(ele.value);
+        let name = ele.value;
+
+        const ans = await fetch('http://localhost:7050/checkname', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name
+            })
+        });
+        const data = await ans.json();
+
+        if (data.status === 404) {
+            name_id.innerHTML = data.message;
+            ischeckName = false;
+        }
+        else {
+            // console.log("Data :-",data.status);
+            name_id.innerHTML = "";
+            ischeckName = true;
+        }
+
+        checksubmit(this);
+    }
+
+
+    function checksubmit(element) {
+        // console.log(element);
+        // element.addEventListener('input', (e) => {
+
+            // console.log(e);
+            isFormValid = ischeckemail && ischeckPassword1 && ischeckPassword2 && ischeckName && ischeckemail2;
+            console.log("//////////");
+
+            // console.log("email1:-" + ischeckemail);
+            // console.log("pass1 :-" + ischeckPassword1);
+            // console.log("pass2 :-" + ischeckPassword2);
+
+            // console.log("name :-" + ischeckName);
+            // console.log("email2 :-" + ischeckemail2);
+            console.log(isFormValid);
+
+            if (isFormValid) {
+                submit.disabled = false;
+                submit.style.cursor = 'pointer';
+            }
+            else {
+                submit.disabled = true;
+                submit.style.cursor = 'not-allowed';
+            }
+        // })
+
+
+
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+        crossorigin="anonymous"></script> -->
+    <title>Job Form Update </title>
+</head>
+
+<body>
+    <form action="/jobformdetail/editform" method="post">
+        <div>Job Application</div>
+        <div>
+            <!-- Basic Detail -->
+            <fieldset>
+                <legend>Basic Detail:</legend>
+                <div class="div1">
+                    <table>
+                        <tr>
+                            <td> <label for="fname">First name:</label>
+                                <input type="hidden" name="bid" value="<%=data[0].id %>">
+                                <input type="text" id="fname" name="fname" value="<%=data[0].first_name%>"><br><br>
+                            </td>
+                            <td> <label for="lname">Last name:</label>
+                                <input type="text" id="lname" name="lname" value="<%=data[0].last_name%>"><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="Designation_id">Designation:</label>
+                                <input type="text" id="Designation_id" name="Designation"
+                                    value="<%=data[0].designation%>"><br><br>
+                            </td>
+                            <td><label for="add1_id">Address 1:</label><br>
+                                <input type="text" id="add1_id" name="Address1" rows="2" cols="50"
+                                    value="<%=data[0].address1%>">
+                                </input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> <label for="email">Email:</label>
+                                <input type="email" id="email" name="email_name" value="<%=data[0].email%>"><br><br>
+                            </td>
+                            <td><label for="add3_id">Address 2:</label><br>
+                                <input id="add2_id" type="text" name="Address2" rows="2" cols="50"
+                                    value="<%=data[0].address2%>">
+                                </input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="phone_id">Phone Number</label>
+                                <input type="text" name="phone_name" id="phone_id" value="<%=data[0].phone_num%>">
+                            </td>
+                            <td>
+                                <label for="state_id">State:</label>
+                                <select name="state_name" id="state_id" onchange="get_city(this)">
+
+                                    <% for(let i=0;i< data_option.length;i++) { %>
+
+                                        <% if(data[0].state==data_option[i].state) {%>
+                                            <option value="<%=data_option[i].state%>" selected>
+                                                <%=data_option[i].state %>
+                                            </option>
+                                            <% } else { %>
+                                                <option value="<%=data_option[i].state%>">
+                                                    <%=data_option[i].state %>
+                                                </option>
+                                                <% } %>
+                                                    <% } %>
+                                </select>
+                            </td>
+                            <td>
+                                <label for="city_id">City</label>
+                                <select name="city_name" id="city_id">
+                                    <option value="select city" disabled> selected city </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Gender : </label>&nbsp; &nbsp;
+                                <%if(data[0].gender=='male' ) { %>
+                                    <label for="gender_male"> Male </label> <input type="radio" name="gender"
+                                        value="male" checked id="gende_male">
+                                    <label for="gender_female">Female </label><input type="radio" name="gender"
+                                        value="female" id="gender_female">
+                                    <label for="gender_other">other </label><input type="radio" name="gender"
+                                        value="other" id="gender_other">
+                                    <% } else if (data[0].gender=='female' ) {%>
+                                        <label for="gender_male"> Male </label> <input type="radio" name="gender"
+                                            value="male" id="gende_male">
+                                        <label for="gender_female">Female </label><input type="radio" name="gender"
+                                            checked value="female" id="gender_female">
+                                        <label for="gender_other">other </label><input type="radio" name="gender"
+                                            value="other" id="gender_other">
+
+                                        <% } else if(data[0].gender=='other' ) {%>
+                                            <label for="gender_male"> Male </label> <input type="radio" name="gender"
+                                                value="male" id="gende_male">
+                                            <label for="gender_female">Female </label><input type="radio" name="gender"
+                                                value="female" id="gender_female">
+                                            <label for="gender_other">other </label><input type="radio" name="gender"
+                                                value="other" checked id="gender_other">
+                                            <%}%>
+                            </td>
+                            <td>
+                                <label for="zipcode">Zipcode</label>
+                                <input type="number" id="zipcode" name="zipcode_name" value="<%=data[0].zipcode%>">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="RelationShip_id">RelationShip Status:</label>
+                                <select name="RelationShip" id="RelationShip_id">
+                                    <% for( let i=0;i< relation_option.length;i++) { %>
+                                        <% if(relation_option[i].value==data[0].realtionship) {%>
+                                            <option value="<%=relation_option[i].value%>" selected>
+                                                <%=data[0].realtionship%>
+                                            </option>
+                                            <% } else {%>
+                                                <option value="<%=relation_option[i].value%>">
+                                                    <%=relation_option[i].value%>
+                                                </option>
+                                                <%}%>
+                                                    <%}%>
+
+                                </select>
+                            </td>
+                            <td>
+                                <label for="date_id">DOB:</label>
+                                <input type="date" id="date_id" name="date_name" value="<%=data[0].date%>">
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+            </fieldset>
+            <br><br>
+
+            <!-- Education Detail -->
+            <fieldset class="field_type">
+                <legend>Education Detail</legend>
+                <div class="div2">
+                    <table id="tb1">
+                        <% for(let i=0;i<ed_tb.length;i++) {%>
+                            <tr id="clone_id1">
+
+                                <td><label for="board_idd1"></label>
+                                    <select name="course">
+                                        <% for( let j=0;j< course_option.length;j++) { %>
+                                            <% if(ed_tb[i].c_name==course_option[j].value ) {%>
+                                                <option value="<%=course_option[j].value%>" selected>
+                                                    <%=course_option[j].value%>
+                                                </option>
+                                                <% } else {%>
+                                                    <option value="<%=course_option[j].value%>">
+                                                        <%=course_option[j].value%>
+                                                    </option>
+                                                    <% } %>
+                                                        <% } %>
+                                    </select>
+                                </td>
+
+                                <td><label for="board_id0">Name Of board :</label>
+                                    <input type="text" id="board_id0" name="board" value="<%=ed_tb[i].board_name %>">
+                                </td>
+                                <td><label for="passingyear_id0">Passiong Year:</label>
+                                    <input type="number" id="passingyear_id0" name="passingyear"
+                                        value="<%=ed_tb[i].pass_year %>">
+                                </td>
+                                <td><label for="Percentage_id0">Percentage:</label>
+                                    <input type="text" id="Percentage_id0" name="percentage"
+                                        value="<%=ed_tb[i].percentage %>">
+                                </td>
+                                <td>
+                                    <label for="add_btn_id"> </label>
+                                    <input type="button" name="add_button" value="&#10133;" onclick="add_btn()">
+                                </td>
+                            </tr>
+                            <% } %>
+
+                    </table>
+                </div>
+            </fieldset>
+            <!-- Work Experience -->
+            <fieldset class="field_type">
+                <legend>Work Experience</legend>
+                <div class="div3">
+                    <table id="tb3">
+                        <% for(let i=0;i< work_tb.length;i++) { %>
+                            <tr id="clone_id2">
+                                <td><label for="Companyname_id">Company name :</label>
+                                    <input type="text" id="Companyname_id" name="company_name"
+                                        value="<%= work_tb[i].c_name %>">
+                                </td>
+                                <td><label for="Designation_id">Designation:</label>
+                                    <input type="text" id="Designation_id" name="designation_name"
+                                        value="<%= work_tb[i].designation %>">
+                                </td>
+                                <td><label for="from_id">From:</label>
+                                    <input type="date" id="from_id" name="from_date"
+                                        value="<%= work_tb[i].from_name %>">
+                                </td>
+                                <td><label for="to_id">to:</label>
+                                    <input type="date" id="to_id" name="to_date" value="<%= work_tb[i].to_name %>">
+                                </td>
+                                <td>
+                                    <label for="add_Work_btn_id"> </label>
+                                    <input type="button" name="add_Work_btn" id="add_Work_btn" value="&#10133;"
+                                        onclick="addbtn()">
+                                </td>
+                            </tr>
+                            <% } %>
+                    </table>
+                </div>
+            </fieldset>
+            <br><br>
+            <!-- Language Known -->
+            <div class="flex_combine">
+                <fieldset class="field_type field50">
+                    <legend>Language Known</legend>
+                    <div class="div4">
+                        <table>
+
+                            <% var j=0 ;for(let i=0;i< lang.length;i++) { %>
+                                <tr>
+                                    <%if(typeof lang_tb[j] !='undefined' && lang[i].value==lang_tb[j].lang_name) { %>
+                                        <td><label for="<%=lang_tb[j].lang_name%>">
+                                                <%=lang_tb[j].lang_name%>
+                                            </label>
+                                            <input type="checkbox" id="<%=lang[i].value%> " name="<%=lang[i].value%>"
+                                                checked value="<%=lang[i].value%>">
+                                        </td>
+
+                                        <%if(lang_tb[j].read_name=='10'){ %>
+                                            <td><label for="read_id">read</label>
+                                                <input type="checkbox" id="read1_id" value="10"
+                                                    name="<%=lang[i].value%>r" checked>
+                                            </td>
+                                            <% }else { %>
+                                                <td><label for="read_id">read</label>
+                                                    <input type="checkbox" id="read1_id" value="10"
+                                                        name="<%=lang[i].value%>r">
+                                                </td>
+                                                <%}%>
+
+
+                                                    <%if(lang_tb[j].write_name=='10'){ %>
+                                                        <td><label for="write_id">write</label>
+                                                            <input type="checkbox" id="write1_id" value="10"
+                                                                name="<%=lang[i].value%>w" checked>
+                                                        </td>
+                                                        <% }else { %>
+                                                            <td><label for="write_id">write</label>
+                                                                <input type="checkbox" id="write1_id" value="10"
+                                                                    name="<%=lang[i].value%>w">
+                                                            </td>
+                                                            <%}%>
+
+                                                                <%if(lang_tb[j].speak_name=='10'){ %>
+                                                                    <td><label for="speak_id">speak</label>
+                                                                        <input type="checkbox" id="speak1_id" value="10"
+                                                                            name="<%=lang[i].value%>s" checked>
+                                                                    </td>
+                                                                    <% }else { %>
+                                                                        <td><label for="speak_id">speak</label>
+                                                                            <input type="checkbox" id="speak1_id"
+                                                                                value="10" name="<%=lang[i].value%>s">
+                                                                        </td>
+                                                                        <%}%>
+
+                                                                            <%j++;} else {%>
+                                                                                <td><label for="<%=lang[i].value%>">
+                                                                                        <%=lang[i].value%>
+                                                                                    </label>
+                                                                                    <input type="checkbox"
+                                                                                        id="<%=lang[i].value%> "
+                                                                                        name="<%=lang[i].value%>"
+                                                                                        value="<%=lang[i].value%>">
+                                                                                </td>
+
+                                                                                <td><label for="read_id">read</label>
+                                                                                    <input type="checkbox" id="read1_id"
+                                                                                        value="10"
+                                                                                        name="<%=lang[i].value%>r">
+                                                                                </td>
+                                                                                <td><label for="write_id">write</label>
+                                                                                    <input type="checkbox"
+                                                                                        id="write1_id" value="10"
+                                                                                        name="<%=lang[i].value%>w">
+                                                                                </td>
+                                                                                <td><label for="speak_id">speak</label>
+                                                                                    <input type="checkbox"
+                                                                                        id="speak1_id" value="10"
+                                                                                        name="<%=lang[i].value%>s">
+                                                                                </td>
+                                                                                <%}%>
+
+                                </tr>
+
+                                <%}%>
+
+
+                        </table>
+                    </div>
+                </fieldset>
+                <br><br>
+                <!-- Technologies -->
+                <fieldset class="field_type field50">
+                    <legend>Technologies</legend>
+                    <div class="div5">
+                        <table id="t5">
+                            <tr id="tr5">
+                                <td>
+                                    <% var j=0; for (var i=0; i < tech.length; i++) { %>
+                                        <%if(typeof tech_tb[j]!='undefined' && tech_tb[j].tech_name==tech[i].value){ %>
+                                            <%if(tech_tb[j].level=="Beginer"){ %>
+                                                <input type="checkbox" id="tech" name="<%= tech[i].value%>"
+                                                    value="<%= tech[i].value%>" checked>
+                                                <%= tech[i].value%>
+                                                    <input type="radio" id="php_b" name="<%= tech[i].value%>r"
+                                                        value="Beginer" checked>Beginer
+                                                    <input type="radio" id="php_m" name="<%= tech[i].value%>r"
+                                                        value="Mideator">Mideator
+                                                    <input type="radio" id="php_e" name="<%= tech[i].value%>r"
+                                                        value="exp">Expert<br />
+                                                    <% }else if(tech_tb[j].level=="Mideator" ){ %>
+                                                        <input type="checkbox" id="tech" name="<%= tech[i].value%>"
+                                                            value="<%= tech[i].value%>" checked>
+                                                        <%= tech[i].value%>
+                                                            <input type="radio" id="php_b" name="<%= tech[i].value%>r"
+                                                                value="Beginer">Beginer
+                                                            <input type="radio" id="php_m" name="<%= tech[i].value%>r"
+                                                                value="Mideator" checked>Mideator
+                                                            <input type="radio" id="php_e" name="<%= tech[i].value%>r"
+                                                                value="exp">Expert<br />
+                                                            <% }else if(tech_tb[j].level=="Expert" ){ %>
+                                                                <input type="checkbox" id="tech"
+                                                                    name="<%= tech[i].value%>"
+                                                                    value="<%= tech[i].value%>" checked>
+                                                                <%= tech[i].value%>
+                                                                    <input type="radio" id="php_b"
+                                                                        name="<%= tech[i].value%>r"
+                                                                        value="Beginer">Beginer
+                                                                    <input type="radio" id="php_m"
+                                                                        name="<%= tech[i].value%>r"
+                                                                        value="Mideator">Mideator
+                                                                    <input type="radio" id="php_e"
+                                                                        name="<%= tech[i].value%>r" value="Expert"
+                                                                        checked>Expert<br />
+                                                                    <%} %>
+                                                                        <% j++ } else{ %>
+                                                                            <input type="checkbox" id="tech"
+                                                                                name="<%= tech[i].value%>"
+                                                                                value="<%= tech[i].value%>">
+                                                                            <%= tech[i].value%>
+                                                                                <input type="radio" id="php_b"
+                                                                                    name="<%= tech[i].value%>r"
+                                                                                    value="Beginer">Beginer
+                                                                                <input type="radio" id="php_m"
+                                                                                    name="<%= tech[i].value%>r"
+                                                                                    value="Mideator">Mideator
+                                                                                <input type="radio" id="php_e"
+                                                                                    name="<%= tech[i].value%>r"
+                                                                                    value="Expert">Expert<br />
+                                                                                <%} %>
+                                                                                    <%} %>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+            <br><br>
+            <!-- Referance Contact -->
+            <fieldset class="field_type">
+                <legend>Referance Contact:</legend>
+                <div class="div6">
+                    <table id="tb6">
+                        <%for(let i=0;i<ref_tb.length;i++) {%>
+                            <tr id="clone_id3">
+                                <td><label for="Referance_id">Name Of Referance :</label>
+                                    <input type="text" id="Referance_id" name="referance"
+                                        value="<%=ref_tb[i].name_ref %>">
+                                </td>
+                                <td><label for="Contact_id">Contact Number:</label>
+                                    <input type="number" id="Contact_id" name="contact" value="<%=ref_tb[i].contact %>">
+                                </td>
+                                <td><label for="Relation_id">Relation:</label>
+                                    <input type="text" id="Relation_id" name="relation"
+                                        value="<%=ref_tb[i].relation %>">
+                                </td>
+                                <td>
+                                    <label for="add_btn_id"> </label>
+                                    <input type="button" name="add_button" onclick="add_ref()" value="&#10133;">
+                                </td>
+
+                            </tr>
+                            <%}%>
+                    </table>
+                </div>
+            </fieldset>
+            <br><br>
+            <!-- Preferances -->
+            <fieldset class="field_type">
+                <legend>Preferances:</legend>
+                <div class="div7">
+                    <table>
+                        <% for(let j=0;j<prfed_tb.length;j++) { var loca=prfed_tb[j].prefed_loc; var
+                            arr=loca.split(','); console.log(arr); %>
+                            <tr>
+                                <td>
+                                    <label for="location_id">Preferd location:</label>
+
+                                    <select id="location_id" name="location_name" multiple>
+                                        <% var k=0 ;for(let i=0;i< loc.length;i++){ %>
+                                            <%if (typeof arr[k]!='undefined' && arr[k]==loc[i].value ) { %>
+                                                <option value="<%=loc[i].value%>" selected>
+                                                    <%=loc[i].value%>
+                                                </option>
+                                                <% k++;} else {%>
+                                                    <option value="<%=loc[i].value%>">
+                                                        <%=loc[i].value%>
+                                                    </option>
+                                                    <%}%>
+                                                        <%}%>
+
+                                    </select>
+                                </td>
+                                <td>
+                                    <label for="notice_period_id">Notice period</label>
+                                    <input type="text" id="notice_period_id" name="notice_period"
+                                        value="<%= prfed_tb[j].notice_per %>">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="expected_id">Expected CTC</label>
+                                    <input type="text" id="expected_id" name="expected"
+                                        value="<%= prfed_tb[j].expected_ctc %>"> <br><br>
+                                    <label for="Current_id"> Current CTC</label>
+                                    <input type="text" id="Current_id" name="current"
+                                        value="<%= prfed_tb[j].curr_ctc %>">
+                                </td>
+                                <td>
+                                    <label for="Department_id">Department :</label>
+                                    <select name="department_name" id="Department_id" value="<%= prfed_tb[j].dept %>">
+
+                                        <% for(let i=0;i< dep.length;i++) { %>
+                                            <% if(dep[i].value==prfed_tb[j].dept) {%>
+                                                <option value="<%=dep[i].value%>" selected>
+                                                    <%=dep[i].value%>
+                                                </option>
+                                                <% } else {%>
+                                                    <option value="<%=dep[i].value%>">
+                                                        <%=dep[i].value%>
+                                                    </option>
+                                                    <%}%>
+                                                        <%}%>
+                                    </select>
+                                </td>
+                            </tr>
+                            <% } %>
+                    </table>
+                </div>
+            </fieldset>
+            <div class="btn"><input type="submit" value="Save"></div>
+        </div>
+    </form>
+</body>
+
+<script>
+
+    async function get_city(ele) {
+
+        var state_name = ele.value;
+        console.log("state_name   " + state_name);
+        const select_state = await fetch('/jobformdetail/all/state?state_name=' + state_name);
+
+        var cities_arr = await select_state.json();
+        var city = document.getElementById('city_id')
+
+
+        city.innerHTML = "";
+        console.log(cities_arr.result);
+        cities_arr.result.forEach(element => {
+            if (element.city_name == '<%=data[0].city%>') {
+                city.innerHTML += `<option value='${element.city_name}' selected >${element.city_name}</option>`
+            }
+            else
+                city.innerHTML += `<option>${element.city_name}</option>`
+        });
+
+    }
+    get_city(state_id);
+
+    function addbtn() {
+        const node = document.getElementById('tb3');
+        let tr = document.createElement('tr');
+        tr.innerHTML = `<td><label for="Companyname_id">Company name :</label>
+                                 <input type="text" id="Companyname_id" name="company_name">
+                             </td>
+                             <td><label for="Designation_id">Designation:</label>
+                                 <input type="text" id="Designation_id" name="designation_name">
+                             </td>
+                             <td><label for="from_id">From:</label>
+                                 <input type="date" id="from_id" name="from_date">
+                             </td>
+                             <td><label for="to_id">to:</label>
+                                 <input type="date" id="to_id" name="to_date">
+                             </td>`
+
+        // Append the text node to the "li" node:
+        node.appendChild(tr);
+
+        // Append the "li" node to the list:
+        // document.getElementById("tb3").appendChild(node);
+    }
+    function add_btn() {
+        const node = document.getElementById('tb1');
+        let tr = document.createElement('tr');
+        tr.innerHTML = ` <td><label for="board_idd1"></label>
+                                <select name="course">
+                                    <% for( let i=0;i< course_option.length;i++) { %>
+                                        <option value="<%=course_option[i].value%>">
+                                            <%=course_option[i].value%>
+                                        </option>
+                                        <% } %>
+                                </select>
+                            </td>
+                            <td><label for="board_id0">Name Of board :</label>
+                                <input type="text" id="board_id0" name="board">
+                            </td>
+                            <td><label for="passingyear_id0">Passiong Year:</label>
+                                <input type="number" id="passingyear_id0" name="passingyear">
+                            </td>
+                            <td><label for="Percentage_id0">Percentage:</label>
+                                <input type="text" id="Percentage_id0" name="percentage">
+                            </td>
+                           `
+
+        // Append the text node to the "li" node:
+        node.appendChild(tr);
+
+        // Append the "li" node to the list:
+        // document.getElementById("tb1").appendChild(node);
+    }
+
+
+    function add_ref() {
+        const node = document.getElementById('tb6');
+        let tr = document.createElement('tr');
+        tr.innerHTML = `   <td><label for="Referance_id">Name Of Referance :</label>
+                                <input type="text" id="Referance_id" name="referance">
+                            </td>
+                            <td><label for="Contact_id">Contact Number:</label>
+                                <input type="number" id="Contact_id" name="contact">
+                            </td>
+                            <td><label for="Relation_id">Relation:</label>
+                                <input type="text" id="Relation_id" name="relation">
+                            </td>
+                          
+                           `
+
+        // Append the text node to the "li" node:
+        node.appendChild(tr);
+
+        // Append the "li" node to the list:
+        // document.getElementById("tb6").appendChild(node);
+    }
+
+
+</script>
+
+</html>

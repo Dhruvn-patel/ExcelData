@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game event</title>
+    <style>
+        .cotainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 150px;
+        }
+
+        td {
+            box-shadow: 2px 2px
+        }
+
+        .showCounter {
+            font-size: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .counter_show {
+            font-size: 30px;
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        input {
+            height: 20px;
+            width: 20px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body onload="myfunc(this)">
+    <div class="counter_show">
+        <span id="timer"></span>
+
+    </div>
+    <div class="showCounter">
+        Count :<p id="Mssage"> </p>
+    </div>
+    <div class="cotainer">
+        <table border="1" cellspacing="0" height="400px" width="400px" id="table_id">
+        </table>
+    </div>
+    <script>
+        var dhruv_col = 3, dhruv_row = 3;
+        var dhruv_random_id;
+        var dhruv_table_id = document.getElementById('table_id');
+        var dhruv_counter = 0;
+        var count_msg = document.getElementById('Mssage');
+        count_msg.innerHTML = 0;
+        var counter_timer = document.getElementById('timer');
+        var timer = 10;
+        function myfunc() {
+            var internal = setInterval(function () {
+                counter_timer.innerText = timer;
+                // console.log(timer);
+                if (timer <= 0) {
+                    clearInterval(internal);
+                    console.log(dhruv_table_id);
+                    return false;
+
+                    // var td_val=document.querySelectorAll('td');
+                    // td_val.forEach((val)=>{
+                    //     val.addEventListener('click', (e)=>{
+                    //         console.log("cz");
+                    //     })
+                    // })
+                }
+                timer--;
+
+            }, 1000);
+            return true;
+        }
+
+        function start() {
+
+            var dhruv_cnt = 0;
+            for (var i = 0; i < dhruv_row; i++) {
+                var tr = document.createElement('tr');
+                dhruv_table_id.appendChild(tr);
+                for (var j = 0; j < dhruv_col; j++) {
+                    var td = document.createElement('td');
+                    td.id = dhruv_cnt;
+                    console.log(timer);
+                    if (timer > 0)
+                        td.onclick = addCol;
+                    dhruv_cnt++;
+                    tr.appendChild(td);
+                }
+
+            }
+            //size of table generate random number size 3 (0-8)
+            dhruv_random_id = Math.floor(Math.random() * (dhruv_row * dhruv_row));
+            var bg_round = document.getElementById(dhruv_random_id).style;
+            dhruv_table_id.style.backgroundColor = "#7E7E7E"
+            bg_round.backgroundColor = "#EAE4E4";
+            bg_round.opacity = 0.5;
+        }
+        const dhruv_color = ['green', 'blue', 'purple', 'brown', 'orange', 'yellow', 'lightblue', 'lightgreen', 'lightgolden', 'lightpink', 'pink'];
+        function addCol(event) {
+            var color_random = Math.floor(Math.random() * dhruv_color.length);
+
+            var check_id = event.target.id;
+            console.log(check_id, dhruv_random_id);
+            if (check_id == dhruv_random_id) {
+
+                dhruv_counter += 1;
+                // console.log(event.stopPropagation);
+
+                if (dhruv_row <= 10) {
+                    dhruv_col = dhruv_col + 1;
+                    dhruv_row = dhruv_row + 1;
+                    dhruv_table_id.innerHTML = ""
+                    start();
+                }
+                else {
+                    dhruv_table_id.innerHTML = ""
+                    start();
+                }
+                count_msg.innerHTML = dhruv_counter;
+                dhruv_table_id.style.backgroundColor = dhruv_color[color_random];
+            }
+        }
+        start()
+    </script>
+</body>
+
+</html>
