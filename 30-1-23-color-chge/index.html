@@ -10,8 +10,6 @@
         .cotainer {
             display: flex;
             justify-content: center;
-            align-items: center;
-            margin-top: 150px;
         }
 
         td {
@@ -29,7 +27,8 @@
             font-size: 30px;
             display: flex;
             justify-content: center;
-            margin-top: 50px;
+            align-items: center;
+            flex-direction: column;
         }
 
         input {
@@ -37,29 +36,35 @@
             width: 20px;
             font-size: 15px;
         }
+
+        button {
+            height: 50px;
+            width: 50px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
-<body onload="myfunc(this)">
+<body>
     <div class="counter_show">
+        <div><button onclick="gameStart()">start</button></div>
         <span id="timer"></span>
-
     </div>
     <div class="showCounter">
-        Count :<p id="Mssage"> </p>
+        <p>Count :<span id="Mssage"> </span></p>
     </div>
     <div class="cotainer">
         <table border="1" cellspacing="0" height="400px" width="400px" id="table_id">
         </table>
     </div>
     <script>
-        var dhruv_col = 3, dhruv_row = 3;
-        var dhruv_random_id;
-        var dhruv_table_id = document.getElementById('table_id');
-        var dhruv_counter = 0;
+        let dhruv_col = 3, dhruv_row = 3;
+        let dhruv_random_id;
+        let dhruv_table_id = document.getElementById('table_id');
+        let dhruv_counter = 0;
         var count_msg = document.getElementById('Mssage');
         count_msg.innerHTML = 0;
-        var counter_timer = document.getElementById('timer');
+        const counter_timer = document.getElementById('timer');
         var timer = 10;
         function myfunc() {
             var internal = setInterval(function () {
@@ -67,15 +72,8 @@
                 // console.log(timer);
                 if (timer <= 0) {
                     clearInterval(internal);
-                    console.log(dhruv_table_id);
+                    // console.log(dhruv_table_id);
                     return false;
-
-                    // var td_val=document.querySelectorAll('td');
-                    // td_val.forEach((val)=>{
-                    //     val.addEventListener('click', (e)=>{
-                    //         console.log("cz");
-                    //     })
-                    // })
                 }
                 timer--;
 
@@ -83,18 +81,19 @@
             return true;
         }
 
+        const dhruv_color = ['green', 'blue', 'purple', 'brown', 'orange', 'yellow', 'lightblue', 'lightgreen', 'lightpink', 'pink'];
+        var color_random = Math.floor(Math.random() * dhruv_color.length);
         function start() {
-
             var dhruv_cnt = 0;
             for (var i = 0; i < dhruv_row; i++) {
                 var tr = document.createElement('tr');
                 dhruv_table_id.appendChild(tr);
-                for (var j = 0; j < dhruv_col; j++) {
+                for (var j = 0; j < dhruv_row; j++) {
                     var td = document.createElement('td');
                     td.id = dhruv_cnt;
-                    console.log(timer);
-                    if (timer > 0)
-                        td.onclick = addCol;
+                    // console.log(timer);
+                    // if (timer > 0)
+                    td.onclick = addCol;
                     dhruv_cnt++;
                     tr.appendChild(td);
                 }
@@ -102,16 +101,16 @@
             }
             //size of table generate random number size 3 (0-8)
             dhruv_random_id = Math.floor(Math.random() * (dhruv_row * dhruv_row));
-            var bg_round = document.getElementById(dhruv_random_id).style;
-            dhruv_table_id.style.backgroundColor = "#7E7E7E"
-            bg_round.backgroundColor = "#EAE4E4";
-            bg_round.opacity = 0.5;
+            let bg_round = document.getElementById(dhruv_random_id).style;
+            let alltd = document.querySelectorAll('td');
+            console.log(" sds", color_random, dhruv_color[color_random]);
+            alltd.forEach((val) => {
+                val.style.backgroundColor = dhruv_color[color_random]
+            })
+            bg_round.opacity = "0.2";
         }
-        const dhruv_color = ['green', 'blue', 'purple', 'brown', 'orange', 'yellow', 'lightblue', 'lightgreen', 'lightgolden', 'lightpink', 'pink'];
         function addCol(event) {
-            var color_random = Math.floor(Math.random() * dhruv_color.length);
-
-            var check_id = event.target.id;
+            const check_id = event.target.id;
             console.log(check_id, dhruv_random_id);
             if (check_id == dhruv_random_id) {
 
@@ -119,7 +118,6 @@
                 // console.log(event.stopPropagation);
 
                 if (dhruv_row <= 10) {
-                    dhruv_col = dhruv_col + 1;
                     dhruv_row = dhruv_row + 1;
                     dhruv_table_id.innerHTML = ""
                     start();
@@ -129,10 +127,19 @@
                     start();
                 }
                 count_msg.innerHTML = dhruv_counter;
-                dhruv_table_id.style.backgroundColor = dhruv_color[color_random];
+                // dhruv_table_id.style.backgroundColor = dhruv_color[color_random];
+                let alltd = document.querySelectorAll('td');
+                color_random = Math.floor(Math.random() * dhruv_color.length)
+                alltd.forEach((val) => {
+                    val.style.backgroundColor = dhruv_color[color_random]
+                })
             }
         }
-        start()
+        function gameStart() {
+            if (confirm("Do you want to start game ???")) {
+                start()
+            }
+        }
     </script>
 </body>
 
