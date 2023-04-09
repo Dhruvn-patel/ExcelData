@@ -23,7 +23,7 @@
             justify-content: center;
             text-align: center;
             margin-top: 6%;
-
+            gap: 6%;
         }
 
         h1 {
@@ -33,7 +33,7 @@
             margin-top: 20px;
         }
 
-        td {
+        .mytd {
             height: 150px;
             width: 150px;
             border: 1px solid black;
@@ -82,6 +82,7 @@
             margin-top: 20px;
             font-size: 20px;
             margin: 20px;
+
         }
 
         span {
@@ -90,34 +91,39 @@
     </style>
 </head>
 
-<body onload="myfuncnew()">
+<body>
     <h1 class="title">Tic-Toc-Tic</h1>
-    <div class="wonPlayer">
-        <p id="ShowWin"></p>
-
-    </div>
-    <p id="counter">
-        <!-- <p><span id="playerx"></span></p>
-        <p><span id="playero"></span></p> -->
-    </p>
     <div class="container">
-        <table border="1" height="500px " width="50%" cellspacing="0">
+        <table border="1" height="300px " width="50%" cellspacing="0">
             <tr>
-                <td id="0"></td>
-                <td id="1"></td>
-                <td id="2"></td>
+                <td id="0" class="mytd"></td>
+                <td id="1" class="mytd"></td>
+                <td id="2" class="mytd"></td>
             </tr>
             <tr>
-                <td id="3"></td>
-                <td id="4"></td>
-                <td id="5"></td>
+                <td id="3" class="mytd"></td>
+                <td id="4" class="mytd"></td>
+                <td id="5" class="mytd"></td>
             </tr>
             <tr>
-                <td id="6"></td>
-                <td id="7"></td>
-                <td id="8"></td>
+                <td id="6" class="mytd"></td>
+                <td id="7" class="mytd"></td>
+                <td id="8" class="mytd"></td>
             </tr>
         </table>
+        <div class="result">
+            <h2>Rounds </h2>
+            <div id="ans">
+                <table border="1" cellspacing="0">
+                    <thead>
+                        <th>Count</th>
+                        <th>Player X</th>
+                        <th>Player O</th>
+                    </thead>
+                    <tbody id="coladd"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <div class="resetbtn">
         <p class="display">Player Turn :<span id="cng_player"></span></p>
@@ -127,9 +133,9 @@
         var dhruv_td = document.querySelectorAll('td');
         var dhruv_rst_btn = document.getElementById('rstbtn');
         var dhruv_msg = document.getElementById('cng_player');
-        var dhruv_win = document.getElementById('ShowWin');
+
         dhruv_rst_btn.addEventListener('click', resetValue);
-        let total_display = document.getElementById('counter');
+        let total_display = document.getElementById('coladd');
         dhruv_td.forEach((val) => {
             val.addEventListener('click', myfun)
         })
@@ -143,15 +149,17 @@
             [0, 4, 8],
             [2, 4, 6],
         ]
-        var dhruv_X_text = "X";
-        var dhruv_O_text = "O";
-        var dhruv_spa = new Array(9).fill(null);
-        var dhruv_chnge_player = dhruv_O_text;
-        var dhruv_tie = false;
-        var dhruv_cnt_tie = 0;
-        var flag = true;
-        var dhruv_player_x = 0, dhruv_player_O = 0;
+        let dhruv_X_text = "X";
+        let dhruv_O_text = "O";
+        let count = 1;
+        let dhruv_spa = new Array(9).fill(null);
+        let dhruv_chnge_player = dhruv_O_text;
+        let dhruv_tie = false;
+        let dhruv_cnt_tie = 0;
+        let flag = true;
+        let dhruv_player_x = 0, dhruv_player_O = 0;
         let x_total = 0, y_total = 0;
+        let total_X = 0, total_O = 0;
         function myfun(e) {
             let dhruv_idx = e.target.id;
 
@@ -164,54 +172,45 @@
                     // dhruv_tie=true;
                     var ans = dhruv_spa[dhruv_arr[0]]
                     flag = false;
-                    dhruv_win.innerHTML = `Player Win : ${ans}`;
 
                     if (ans == "X") {
                         dhruv_player_x = Number(dhruv_player_x) + 1;
                         // localStorage.setItem("playerx", dhruv_player_x);
-
                     }
                     else {
                         dhruv_player_O = Number(dhruv_player_O) + 1;
                         // localStorage.setItem("playero", dhruv_player_O);
-
                     }
+                    createCount();
+                    setTimeout(function () {
+                        resetValue();
+                    }, 0.2);
 
-
-                    var px_val = document.createElement("p");
-                    var py_val = document.createElement("p");
-                    px_val.innerHTML = dhruv_player_x
-                    py_val.innerHTML = dhruv_player_x
-                    total_display.appendChild(px_val);
-                    total_display.appendChild(py_val);
-                    // setTimeout(function () {
-
-                    //     resetValue();
-                    // }, 1000);
-                    resetValue()
-                    // document.getElementById('playerx').innerHTML = "player x win :" + dhruv_player_x
-                    // document.getElementById('playero').innerHTML = " player O win :" + dhruv_player_O
                 }
-                console.log("count ", dhruv_cnt_tie)
-                if (dhruv_cnt_tie == 9 && flag == true) {
-                    dhruv_win.innerHTML = "Sorry Try again"
-                    dhruv_chnge_player = dhruv_O_text;
-                    dhruv_msg.innerHTML = dhruv_O_text;
+
+                // console.log(dhruv_cnt_tie, flag);
+                if (dhruv_cnt_tie == '9' && flag == true) {
+                    createCount();
+                    setTimeout(function () {
+                        resetValue();
+                    }, 0.2);
+
                 }
 
                 dhruv_chnge_player = dhruv_chnge_player == dhruv_X_text ? dhruv_O_text : dhruv_X_text;
                 dhruv_msg.innerHTML = dhruv_chnge_player;
 
+
             }
+
+
         }
         function win() {
             for (let val of arr) {
                 let [a, b, c] = val;
-
+                //compare every possible ans and return matches idx 
                 if (dhruv_spa[a] != null && dhruv_spa[b] != null && dhruv_spa[c] != null && dhruv_spa[a] == dhruv_spa[b] && dhruv_spa[a] == dhruv_spa[c]) {
-                    console.log(dhruv_spa[a]);
                     return [a, b, c];
-
                 }
             }
             return false;
@@ -221,17 +220,45 @@
             dhruv_td.forEach((val) => {
                 val.innerHTML = "";
             })
-            dhruv_win.innerHTML = ""
-            flag == false;
             dhruv_cnt_tie = 0;
             dhruv_chnge_player = dhruv_O_text;
             dhruv_msg.innerHTML = dhruv_O_text;
+            flag = true;
             return true;
         }
 
         function myfuncnew() {
-            // document.getElementById('playerx').innerHTML = "Previous player x win :" + localStorage.getItem("playerx");
-            // document.getElementById('playero').innerHTML = "Previous player O win :" + localStorage.getItem("playero");
+            alert(`total X win =${total_X} and total O win =${total_O}`)
+            total_display.innerHTML = "";
+            resetValue();
+        }
+        function createCount() {
+
+            const tr = document.createElement("tr");
+            total_display.appendChild(tr);
+            const c_id = document.createElement("td");
+            const px_val = document.createElement("td");
+            const py_val = document.createElement("td");
+            c_id.innerHTML = count;
+            px_val.innerHTML = dhruv_player_x
+            py_val.innerHTML = dhruv_player_O
+            total_X += dhruv_player_x;
+            total_O += dhruv_player_O;
+            dhruv_player_x = 0;
+            dhruv_player_O = 0;
+            count++;
+            if (count > 5) {
+
+                setTimeout(function () {
+                    myfuncnew();
+                    resetValue();
+                }, 0.2);
+            }
+            tr.appendChild(c_id);
+            tr.appendChild(px_val);
+            tr.appendChild(py_val);
+
+            console.log(count);
 
         }
     </script>
